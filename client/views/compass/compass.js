@@ -1,62 +1,21 @@
 Template.compass.helpers({
-  distToRP: 10.0,
+  distToRP: 0.0,
   heading: 0.0
 });
 
 Template.compass.events({
-  "click .start-watch": function(event, template) {
-    var self = template;
-
-    var button = template.$(".start-watch");
-    button.toggleClass("start-watch");
-    button.toggleClass("stop-watch");
-    button.text("Stop Watching");
-
-    var $compass = self.$(".compass");
-    var $heading = self.$(".heading-value");
-
-    var success = function(data) {
-      var heading = data.magneticHeading;
-      var adjustment = self.heading - heading
-
-      $heading.text(heading +" + "+ data.headingAccuracy);
-      $compass.velocity({
-        rotateZ: -heading
-      }, {
-        duration: 1,
-        easing: [50, 20]
-      });
-
-      self.heading = adjustment
-
-    }, failure = function() {
-      Meteor.call("log", ["failure", arguments]);
-    };
-
-    Meteor.startup(function() {
-      self.watchId = navigator.compass.watchHeading(success, failure, {
-      });
-    });
-  },
-  "click .stop-watch": function(event, template) {
-    var self = template;
-
-    var button = template.$(".stop-watch");
-    button.toggleClass("start-watch");
-    button.toggleClass("stop-watch");
-    button.text("Start Watching");
-
-    Meteor.startup(function() {
-      navigator.compass.clearWatch(template.watchId);
-      self.watchId = null;
-    });
+  "click a.home": function(event, template) {
+    if (template.interval) {
+      clearInterval(template.interval);
+    }
   }
-});
+})
 
 Template.compass.rendered = function() {
   var self = this;
   var $compass = self.$(".compass");
   var $heading = self.$(".heading-value");
+  var $distance = self.$(".distance-value");
   if (Meteor.isCordova) {
     var failure = function() {
       Meteor.call("log", ["failure", arguments]);
@@ -68,5 +27,36 @@ Template.compass.rendered = function() {
         self.heading = heading;
       }, failure);
     });
+
+    GoogleMaps.load();
+    self.interval = setInterval(function() {
+      if (GoogleMaps.loaded()) {
+        var ll = Util.getLatLng();
+        var myLocation = new google.maps.LatLng(ll.lat, ll.lng);
+
+        var users = Meteor.users.find();
+        var bounds = new google.maps.LatLngBounds();
+        users.forEach(function(user) {
+          var LatLng = new google.maps.LatLng(user.location.latitude, user.location.longitude);
+          bounds.extend(latLng);
+        });
+
+        var center = bounds.getCenter();
+        var distance = google.maps.geometry.spherical.computeDistanceBetween(myLocation, center);
+        var heading = google.maps.geometry.spherical.computeHeading(myLocation, center) + 180;
+        var adjustment = self.heading - heading
+
+        $heading.text(heading);
+        $heading.text(distance);
+        $compass.velocity({
+          rotateZ: -heading
+        }, {
+          duration: 1,
+          easing: [50, 20]
+        });
+
+        self.heading = adjustment;
+      }
+    }, 1000*5);
   }
 };
