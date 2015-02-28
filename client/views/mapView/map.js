@@ -1,6 +1,7 @@
 if(Meteor.isClient){
 	Template.map.rendered= function(){
 		GoogleMaps.load();	
+
 	};
 
 	Template.map.helpers({
@@ -18,41 +19,49 @@ if(Meteor.isClient){
 	
 	Template.map.created = function() {
 	  // We can use the `ready` callback to interact with the map API once the map is ready.
-	  GoogleMaps.ready('exampleMap', function(gmap) {
-	  		
-	  		//TODO: meteor on location changed
-	  		//zoomUsers(Meteor.users.find());  <-approximately
+	  GoogleMaps.ready('exampleMap', function(gmap) {	  			  	
 	  		
 	  		window.setInterval(function(){
-	  			var centerPoint= panCurrentLocation(gmap);
-	  			updateMarkers(gmap, centerPoint);
-	  			
-	  		}, 1000);	    
+	  			var centerPoint = panCurrentLocation(gmap);
+	  			updateMarkers(gmap, centerPoint);	  				  		
+	  		}, 5000);	    
 	  });	  
 	};	
 }
 
-var panCurrentLocation = function(myMap){	
-	// console.log("finding location");
-
+var panCurrentLocation = function(myMap){		
+	var users= Meteor.users.find();
 	var bounds = new google.maps.LatLngBounds();	
-	
-	for(var j=0; j<latLngArr.length; j++){
-		bounds.extend(latLngArr[j]);
-	}	
-	myMap.instance.fitBounds(bounds);
+	var loc;
+	users.forEach(function(user){
+		loc = user.profile.location.coordinates;
+		var gLatLng= new google.maps.LatLng(loc[0], loc[1]);
+		bounds.extend(gLatLng);
+	})	
+		
+	myMap.instance.fitBounds(bounds);	
 	return bounds.getCenter();
 }
 
-var updateMarkers= function(mymap, centerPoint){
+var updateMarkers= function(myMap, centerPoint){
 	var users= Meteor.users.find();
+	var loc;
 	users.forEach(function(user){
-		var gLatLng= new google.maps.LatLng(user.location.latitude, user.location.longitude);
-		var marker = new google.maps.Marker({
-			    position: gLatLng,
-			    map: myMap.instance,
-			    title: user.name
-				});
+		loc = user.profile.location.coordinates;
+		var gLatLng= new google.maps.LatLng(loc[0], loc[1]);
+		if(Meteor.user()==user){
+			var marker = new google.maps.Marker({
+				    position: gLatLng,
+				    map: myMap.instance,
+				    title: "You are here"
+					});
+		}else{
+			var marker = new google.maps.Marker({
+				    position: gLatLng,
+				    map: myMap.instance,
+				    title: user.name
+					});
+		}
 	});	
 	var marker = new google.maps.Marker({
 			    position: centerPoint,
