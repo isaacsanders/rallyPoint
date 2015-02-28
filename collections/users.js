@@ -8,6 +8,7 @@ if (Meteor.isServer) {
     Meteor.users._ensureIndex({ "profile.location":'2dsphere'});
     Meteor.methods({
         createGroupUser: createGroupUser,
+        addUsersToGroup: addUsersToGroup
     });
 }
 
@@ -15,8 +16,7 @@ Meteor.methods({
     setUserProfileProperty: setUserProfileProperty,
     updateUserLocation:     updateUserLocation,
     startSync:              startSync,
-    endSync:                endSync,
-    addUsersToGroup:        addUsersToGroup
+    endSync:                endSync
 });
 
 
