@@ -68,7 +68,7 @@ function tryConnectToGroup() {
     Util.log('TRY CONNECT!!!!!');
     if (usersSyncing.count() > 1) {
         Util.log('SETTING TIMER!!!!!', usersSyncing.fetch());
-        self.connectTimer = setTimeout(connect, 3000);
+        self.connectTimer = setTimeout(connect, 2500);
     }
 
     function connect() {
@@ -87,13 +87,3 @@ function tryConnectToGroup() {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
