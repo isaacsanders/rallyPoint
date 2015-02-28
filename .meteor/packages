@@ -6,4 +6,12 @@
 
 meteor-platform
 autopublish
-insecure
+fourseven:scss
+natestrauser:font-awesome
+iron:router
+random
+accounts-password
+mizzao:jquery-ui
+mizzao:bootstrap-3
+percolate:velocityjs
+mdg:geolocation
