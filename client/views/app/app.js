@@ -7,7 +7,6 @@ rallypt.ScreenEnum = {
 
 rallypt.currentScreen = rallypt.ScreenEnum.MAP;
 
-
 Template.app.helpers({
     toggleIcon: function () {
       if(rallypt.currentScreen == rallypt.ScreenEnum.COMPASS){//in compass view        
@@ -35,7 +34,8 @@ Template.app.events({
     if(rallypt.currentScreen== rallypt.ScreenEnum.COMPASS){
       rallypt.currentScreen= rallypt.ScreenEnum.MAP;
     }else{
-      rallypt.currentScreen= rallypt.ScreenEnum.COMPASS
+      rallypt.currentScreen= rallypt.ScreenEnum.COMPASS;
     }
+    console.log(rallypt.currentScreen);
   }
 });
