@@ -1,0 +1,18 @@
+<template name='app'>
+	<div class="app-top">
+		<button text="Leave">Leave</button>	
+		<i class={{toggleIcon}}></i>
+	</div>    
+    {{#if currentScreen 0}}
+    	{{> friend}}
+    {{else}}
+    	{{#if currentScreen 1}}
+    		{{> compass}}
+    	{{else}}
+    		{{>map}}
+    	{{/if}}
+    {{/if}}    
+    <div class="app-bottom">
+    	<button>{{rallyText}}</button>
+    </div>
+</template>
