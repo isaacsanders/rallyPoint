@@ -1,13 +1,13 @@
-<body>
+<template name="friend">
+  <li>{{profile.name}}</li>
+</template>
+
+<template name ="friendList">
   <div class="container">
     <ul>
-      {{#each friendlist}}
+      {{#each friends}}
         {{> friend}}
       {{/each}}
     </ul>
   </div>
-</body>
-
-<template name="friend">
-  <li>{{text}}</li>
 </template>
