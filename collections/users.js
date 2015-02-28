@@ -16,7 +16,7 @@ Meteor.methods({
 
 function createTempUser(name) {
     var uniqueEmail  = getUniqueEmail();
-        credentials  = { email: uniqueEmail, password: uniqueEmail },
+        credentials  = { email: uniqueEmail, username: uniqueEmail, password: uniqueEmail },
         userFields   = _.extend(credentials, { profile: { name: name }});
     Accounts.createUser(userFields);
     return credentials;
