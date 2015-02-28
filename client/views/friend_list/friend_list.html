@@ -1,0 +1,13 @@
+<body>
+  <div class="container">
+    <ul>
+      {{#each friendlist}}
+        {{> friend}}
+      {{/each}}
+    </ul>
+  </div>
+</body>
+
+<template name="friend">
+  <li>{{text}}</li>
+</template>
