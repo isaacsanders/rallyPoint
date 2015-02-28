@@ -1,5 +1,4 @@
 Meteor.publish('usersSyncingNearLoc', function(location) {
-    check
     var query = 
     { 
         'profile.location': { $nearSphere: { 
@@ -9,4 +8,11 @@ Meteor.publish('usersSyncingNearLoc', function(location) {
         'profile.isSyncing': true
     };
     return Meteor.users.find(query);
+});
+
+
+Meteor.publish('group', function(groupId) {
+    check(groupId, String);
+    return [ Groups.find({ _id: groupId }),
+             Meteor.users.find({ groupId: groupId }) ]
 });
