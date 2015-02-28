@@ -56,8 +56,6 @@ function addUsersToGroup(userIds, groupId) {
         Groups.update(groupId, { $addToSet: { userIds: { $each: userIds } } });
     }
 
-    Util.log('ADD-USERS-TO-GROUP', groupId);
-
     _.each(userIds, function(userId) {
         setUserProfileProperty(userId, 'groupId', groupId);
         endSync(userId);
