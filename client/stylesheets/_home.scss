@@ -23,6 +23,26 @@
     margin-top: 150px;
     box-shadow: 2px 2px 5px black;
 
+    &::after {
+      transition: opacity ease 1s;
+      opacity: 0;
+      content: '*Name is required';
+      width: 250px;
+      padding: 10px;
+      position: absolute;
+      top: 150px;
+      left: 90px;
+      font-weight: bold;
+      font-size: 20px;
+      color: white;
+      background-color: darkred;
+      border-radius: 10px;
+    }
+
+    &.error::after {
+      opacity: 1;
+    }
+
     &.finding {
       div.circle {
         z-index: 5;
@@ -38,18 +58,6 @@
       }
     }
 
-    input {
-      width: 380px;
-      padding: 20px;
-      padding-right: 70px;
-      border-radius: 15px;
-      outline: none;
-      border: none;
-      font-size: 20px;
-      margin: 31px;
-      margin-left: -20px;
-    }
-
     .circle {
       position: absolute;
       top: -12px;
@@ -62,7 +70,19 @@
       height: 150px;
     }
 
-    button {
+    .name {
+      width: 380px;
+      padding: 20px;
+      padding-right: 70px;
+      border-radius: 15px;
+      outline: none;
+      border: none;
+      font-size: 20px;
+      margin: 31px;
+      margin-left: -20px;
+    }
+
+    .submit {
       outline: none;
       border: none;
       z-index: 10;
@@ -71,6 +91,7 @@
       background: darken($primary-color, 15%);
       box-shadow: 2px 2px 4px black;
       text-align: center;
+      cursor: pointer;
     }
   }
 }

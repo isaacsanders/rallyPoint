@@ -6,21 +6,30 @@ Template.home.created = function() {
 }
 
 Template.home.rendered = function() {
-    self.finder = self.$('.find-group'),
-    self.input  = self.$('input');
+    self.finder     = self.$('.find-group'),
+    self.nameInput  = self.$('.name');
+    $('.submit').on('vmousedown', findGroupMemebers);
 }
  
 Template.home.events({
-    'mousedown button': findGroupMemebers,
-    'mouseup button, mouseout button': stopFindingGroupMembers
+    'mouseup .submit, mouseout .submit': stopFindingGroupMembers
 });
 
 
-function findGroupMemebers() {
-    if (!self.input.val()) return 
+function findGroupMemebers(event) {
+    event.preventDefault();
+    if (!self.nameInput.val()) return issueNonameInputAlert();
     self.finder.addClass(FINDING_CLASS);
 }
 
 function stopFindingGroupMembers() {
     self.finder.removeClass(FINDING_CLASS);
+}
+
+function issueNonameInputAlert() {
+    self.finder.addClass('error');
+    clearTimeout(self.errorTimer);
+    self.errorTimer = setTimeout(function() {
+        self.finder.removeClass('error');
+    }, 1000);
 }
