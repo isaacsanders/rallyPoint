@@ -1,6 +1,14 @@
 .app-top{
-	background-color:$secondary-color;
+	background-color:$primary-color;
+	color:$text-color;
+	height:5%;	
+
+	button{
+		display:inline;
+		height: 100%;
+	}
 }
+
 
 #toggle{
 	float:right;

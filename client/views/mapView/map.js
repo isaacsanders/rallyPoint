@@ -46,26 +46,48 @@ var panCurrentLocation = function(myMap){
 var updateMarkers= function(myMap, centerPoint){
 	var users= Meteor.users.find();
 	var loc;
+	var populationOptions = {
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.3,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.3,
+      map: myMap.instance,      
+      radius: 3
+    };
 	users.forEach(function(user){
 		loc = user.profile.location.coordinates;
 		var gLatLng= new google.maps.LatLng(loc[0], loc[1]);
+		populationOptions.center= gLatLng;
 		if(Meteor.user()==user){
-			var marker = new google.maps.Marker({
-				    position: gLatLng,
-				    map: myMap.instance,
-				    title: "You are here"
-					});
-		}else{
-			var marker = new google.maps.Marker({
-				    position: gLatLng,
-				    map: myMap.instance,
-				    title: user.name
-					});
+			populationOptions.fillColor = "#FFFF00";
 		}
-	});	
-	var marker = new google.maps.Marker({
-			    position: centerPoint,
-			    map: myMap.instance,
-			    title: "Rally Point"
-				});
+
+    	// Add the circle for this city to the map.
+    	var circle = new google.maps.Circle(populationOptions);
+    });
+    var gLatLng= new google.maps.LatLng(centerPoint); 
+    populationOptions.fillColor= '#33FF33';
+	populationOptions.center= gLatLng;   
+    var circle = new google.maps.Circle(populationOptions);
 }
+	// 	if(Meteor.user()==user){
+	// 		var marker = new google.maps.Marker({
+	// 			    position: gLatLng,
+	// 			    map: myMap.instance,
+	// 			    title: "You are here"
+	// 				});
+	// 	}else{
+	// 		var marker = new google.maps.Marker({
+	// 			    position: gLatLng,
+	// 			    map: myMap.instance,
+	// 			    title: user.name
+	// 				});
+	// 	}
+	// });	
+	// var marker = new google.maps.Marker({
+	// 		    position: centerPoint,
+	// 		    map: myMap.instance,
+	// 		    title: "Rally Point"
+	// 			});
+
