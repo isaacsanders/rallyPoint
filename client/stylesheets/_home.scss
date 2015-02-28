@@ -52,6 +52,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4096ee', end
       opacity: 1;
     }
 
+    &.location-error::after {
+      opacity: 1;
+      content: 'Please enable geolocation';
+    }
+
     &.finding {
       div.circle {
         z-index: 5;

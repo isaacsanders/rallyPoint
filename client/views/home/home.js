@@ -1,5 +1,6 @@
 var self,
-    FINDING_CLASS = 'finding';
+    FINDING_CLASS = 'finding',
+    isLocationOff = false;
 
 Template.home.created = function() {
     self = this;
@@ -11,6 +12,10 @@ Template.home.rendered = function() {
     $('.submit')
         .on('vmousedown', findGroupMemebers)
         .on('vmouseup',   stopFindingGroupMembers);
+
+    self.autorun(checkLocationError);
+    self.autorun(subcribeToUsersSyncingNearLoc);
+    self.autorun(tryConnectToGroup);
 }
  
 Template.home.events({
@@ -20,19 +25,71 @@ Template.home.events({
 
 function findGroupMemebers(event) {
     event.preventDefault();
+    if (isLocationOff) return;
     if (!self.nameInput.val()) return issueNonameInputAlert();
     self.finder.addClass(FINDING_CLASS);
-
+    Meteor.call('startSync');
 }
 
 function stopFindingGroupMembers() {
+    if (isLocationOff) return;
     self.finder.removeClass(FINDING_CLASS);
+    Meteor.call('endSync');
 }
 
 function issueNonameInputAlert() {
+    if (isLocationOff) return;
     self.finder.addClass('error');
     clearTimeout(self.errorTimer);
     self.errorTimer = setTimeout(function() {
         self.finder.removeClass('error');
     }, 1000);
 }
+
+function checkLocationError() {
+    if (Session.get('locationError')) {
+        self.finder.addClass('location-error');
+        isLocationOff = true;
+    }
+}
+
+function subcribeToUsersSyncingNearLoc() {
+    var loc       = Session.get('location'),
+        isSycning = Meteor.user().profile.isSycning;
+    if (loc && isSycning) Meteor.subscribe('usersSyncingNearLoc', loc);
+}
+
+function tryConnectToGroup() {
+    clearTimeout(self.connectTimer);
+    var usersSyncing = Meteor.users.find();
+
+    if (usersSyncing.count() > 1) {
+        self.connectTimer = setTimeout(connect, 4000);
+    }
+
+    function connect() {
+        var firstUserToSync = Meteor.user(), 
+                    userIds = [],
+                    groupId;
+
+        usersSyncing.forEach(function(user) {
+            userIds.push(user._id);
+            user.groupId && (groupId = user.groupId);
+            if (user.syncStartedAt <  firstUserToSync.syncStartedAt) firstUserToSync = user;
+        });
+
+        if (firstUserToSync._id == Meteor.userId()) {
+            Meteor.call('addUsersToGroup', userIds, groupId);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+

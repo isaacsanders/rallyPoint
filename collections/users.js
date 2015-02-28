@@ -4,25 +4,58 @@ Accounts.config({
 });
 
 if (Meteor.isServer) {
-    // Meteor.users._ensureIndex({ "profile.location":'2dsphere'});
+     Meteor.users._ensureIndex({ "profile.location":'2dsphere'});
     Meteor.methods({
-        createTempUser: createTempUser,
+        createGroupUser: createGroupUser,
     });
 }
 
 Meteor.methods({
-    setUserProfileProperty: setUserProfileProperty
+    setUserProfileProperty: setUserProfileProperty,
+    updateUserLocation:     updateUserLocation,
+    startSync:              startSync,
+    endSync:                endSync
 });
 
 
-function createTempUser(name) {
+function createGroupUser(name) {
     var uniqueEmail  = getUniqueEmail();
         credentials  = { email: uniqueEmail, username: uniqueEmail, password: uniqueEmail },
-        userFields   = _.extend(credentials, { profile: { name: name,  
-            // location: null
-        }});
+        userFields   = _.extend(credentials, { profile: { name: name }});
     Accounts.createUser(userFields);
     return credentials;
+}
+
+function updateUserLocation(location) {
+    var userId = Meteor.userId();
+    if (userId && location) {
+        setUserProfileProperty(Meteor.userId(), 'location', Util.locToMongo(location));
+    }
+}
+
+function startSync() {
+    changeSyncState(true);
+}
+
+function endSync() {
+    changeSyncState(false);
+}
+
+function changeSyncState(isSyncing) {
+    var time = isSyncing && Date.now();
+    Meteor.users.update(Meteor.userId(), { $set: { 'profile.isSyncing': isSyncing, 'profile.syncStartedAt': time } });
+}
+
+function addUsersToGroup(userIds, groupId) {
+    if (!groupId) {
+        groupId = Groups.insert({ userIds: userIds });
+    } else {
+        Groups.update(groupId, { $addToSet: { userIds: { $each: userIds } } });
+    }
+
+    _.each(userIds, function(id) {
+        Users.update(id, { $set: { groupId: groupId } });
+    });
 }
 
 function setUserProfileProperty(userId, propName, propVal) {
@@ -31,7 +64,7 @@ function setUserProfileProperty(userId, propName, propVal) {
 
     var property = {};
     property['profile.' + propName] = propVal;
-    Meteor.users.update({ _id: userId }, { $set: property });
+    Meteor.users.update(userId, { $set: property });
 }
 
 function getUniqueEmail() {
@@ -42,8 +75,4 @@ function getUniqueEmail() {
 
 function usernameExists(username) {
     return !! Meteor.users.findOne({ username: username });
-}
-
-function locToMongo(location){
-    return {type: 'Point', coordinates: [location.long, location.lat]};
 }
