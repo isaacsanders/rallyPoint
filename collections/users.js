@@ -4,7 +4,7 @@ Accounts.config({
 });
 
 if (Meteor.isServer) {
-    Meteor.users._ensureIndex({ "profile.location":'2dsphere'});
+    // Meteor.users._ensureIndex({ "profile.location":'2dsphere'});
     Meteor.methods({
         createTempUser: createTempUser,
     });
@@ -18,7 +18,9 @@ Meteor.methods({
 function createTempUser(name) {
     var uniqueEmail  = getUniqueEmail();
         credentials  = { email: uniqueEmail, username: uniqueEmail, password: uniqueEmail },
-        userFields   = _.extend(credentials, { profile: { name: name,  location: null}});
+        userFields   = _.extend(credentials, { profile: { name: name,  
+            // location: null
+        }});
     Accounts.createUser(userFields);
     return credentials;
 }
