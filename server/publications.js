@@ -14,5 +14,5 @@ Meteor.publish('usersSyncingNearLoc', function(location) {
 Meteor.publish('group', function(groupId) {
     check(groupId, String);
     return [ Groups.find({ _id: groupId }),
-             Meteor.users.find({ groupId: groupId }) ]
+             Meteor.users.find({ 'profile.groupId': groupId }) ]
 });

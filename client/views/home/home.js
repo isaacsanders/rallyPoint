@@ -28,7 +28,9 @@ function findGroupMemebers(event) {
     if (isLocationOff) return;
     if (!self.nameInput.val()) return issueNonameInputAlert();
     self.finder.addClass(FINDING_CLASS);
-    Meteor.call('startSync');
+    Meteor.call('setUserProfileProperty', 'name', self.nameInput.val(), function() {
+        Meteor.call('startSync');
+    });
 }
 
 function stopFindingGroupMembers() {
@@ -72,17 +74,18 @@ function tryConnectToGroup() {
     }
 
     function connect() {
-        var firstUserToSync = Meteor.user(), 
+        var lastUserToSync  = Meteor.user(), 
                     userIds = [],
                     groupId;
 
         usersSyncing.forEach(function(user) {
             userIds.push(user._id);
             user.groupId && (groupId = user.groupId);
-            if (user.syncStartedAt <  firstUserToSync.syncStartedAt) firstUserToSync = user;
+            if (user.syncStartedAt > lastUserToSync.syncStartedAt) lastUserToSync = user;
+            Util.log('COMPARE', user.syncStartedAt, lastUserToSync.syncStartedAt, user.syncStartedAt > lastUserToSync.syncStartedAt);
         });
 
-        if (firstUserToSync._id == Meteor.userId()) {
+        if (lastUserToSync._id == Meteor.userId()) {
             Meteor.call('addUsersToGroup', userIds, groupId);
         }
     }
