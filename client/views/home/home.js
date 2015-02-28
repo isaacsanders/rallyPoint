@@ -8,7 +8,9 @@ Template.home.created = function() {
 Template.home.rendered = function() {
     self.finder     = self.$('.find-group'),
     self.nameInput  = self.$('.name');
-    $('.submit').on('vmousedown', findGroupMemebers);
+    $('.submit')
+        .on('vmousedown', findGroupMemebers)
+        .on('vmouseup',   stopFindingGroupMembers);
 }
  
 Template.home.events({
@@ -20,6 +22,7 @@ function findGroupMemebers(event) {
     event.preventDefault();
     if (!self.nameInput.val()) return issueNonameInputAlert();
     self.finder.addClass(FINDING_CLASS);
+
 }
 
 function stopFindingGroupMembers() {

@@ -7,10 +7,19 @@
 .home {
   width: 100%;
   text-align: center;
+  height: 100%;
+  background: #4096ee; /* Old browsers */
+background: -moz-radial-gradient(center, ellipse cover,  #4096ee 0%, #70b1be 0%, #04434f 100%); /* FF3.6+ */
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#4096ee), color-stop(0%,#70b1be), color-stop(100%,#04434f)); /* Chrome,Safari4+ */
+background: -webkit-radial-gradient(center, ellipse cover,  #4096ee 0%,#70b1be 0%,#04434f 100%); /* Chrome10+,Safari5.1+ */
+background: -o-radial-gradient(center, ellipse cover,  #4096ee 0%,#70b1be 0%,#04434f 100%); /* Opera 12+ */
+background: -ms-radial-gradient(center, ellipse cover,  #4096ee 0%,#70b1be 0%,#04434f 100%); /* IE10+ */
+background: radial-gradient(ellipse at center,  #4096ee 0%,#70b1be 0%,#04434f 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4096ee', endColorstr='#04434f',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
-  h1 {
-    margin: 25px;
-    font-size: 50px;
+
+  img {
+    width: 550px;
   }
 
   .find-group {
@@ -20,7 +29,7 @@
     border-radius: 20px 70px 70px 20px;
     background: $primary-color;
     margin: auto;
-    margin-top: 150px;
+    margin-top: 50px;
     box-shadow: 2px 2px 5px black;
 
     &::after {
