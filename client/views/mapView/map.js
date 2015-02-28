@@ -24,8 +24,9 @@ if(Meteor.isClient){
 	  		//zoomUsers(Meteor.users.find());  <-approximately
 	  		
 	  		window.setInterval(function(){
-	  			panCurrentLocation(gmap);
-	  			// updateMarkers(gmap);
+	  			var centerPoint= panCurrentLocation(gmap);
+	  			updateMarkers(gmap, centerPoint);
+	  			
 	  		}, 1000);	    
 	  });	  
 	};	
@@ -34,35 +35,28 @@ if(Meteor.isClient){
 var panCurrentLocation = function(myMap){	
 	// console.log("finding location");
 
-	var bounds = new google.maps.LatLngBounds();
-	
-	// //start dummy code
-	var latLngArr= [];
-	for(var i=1; i<=10; i++){
-		latLngArr[i-1]= new google.maps.LatLng(37+(i/1000), 35-(i/1000));
-	}
-	// //end dummy code
+	var bounds = new google.maps.LatLngBounds();	
 	
 	for(var j=0; j<latLngArr.length; j++){
 		bounds.extend(latLngArr[j]);
 	}	
 	myMap.instance.fitBounds(bounds);
-
-	// if(navigator.geolocation) {
-	//     	navigator.geolocation.getCurrentPosition(function(position) {
-	// 		    var pos = new google.maps.LatLng(position.coords.latitude,
-	// 		                                       position.coords.longitude);
-	// 		    myMap.instance.setCenter(pos);
-	// 		    }, function() {
-	// 		      handleNoGeolocation(true);
-	// 		    });
- //  		}
+	return bounds.getCenter();
 }
 
-var zoomUsers = function(users){
-
+var updateMarkers= function(mymap, centerPoint){
+	var users= Meteor.users.find();
 	users.forEach(function(user){
-		//is most northeast
-		//is most 
-	});
+		var gLatLng= new google.maps.LatLng(user.location.latitude, user.location.longitude);
+		var marker = new google.maps.Marker({
+			    position: gLatLng,
+			    map: myMap.instance,
+			    title: user.name
+				});
+	});	
+	var marker = new google.maps.Marker({
+			    position: centerPoint,
+			    map: myMap.instance,
+			    title: "Rally Point"
+				});
 }
