@@ -19,18 +19,19 @@ if(Meteor.isClient){
 	Template.map.created = function() {
 	  // We can use the `ready` callback to interact with the map API once the map is ready.
 	  GoogleMaps.ready('exampleMap', function(gmap) {
-	  	window.setInterval(function(){panCurrentLocation(gmap);}, 3000);	    
+	  		console.log("finding location");
+
+	  		window.setInterval(function(){panCurrentLocation(gmap);}, 1000);	    
 	  });	  
 	};	
 }
 
-var panCurrentLocation = function(gmap){
-	console.log("finding location");
+var panCurrentLocation = function(myMap){	
 	if(navigator.geolocation) {
 	    	navigator.geolocation.getCurrentPosition(function(position) {
 			    var pos = new google.maps.LatLng(position.coords.latitude,
 			                                       position.coords.longitude);
-			    gmap.instance.setCenter(pos);
+			    myMap.instance.setCenter(pos);
 			    }, function() {
 			      handleNoGeolocation(true);
 			    });
