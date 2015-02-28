@@ -4,7 +4,8 @@ Accounts.config({
 });
 
 if (Meteor.isServer) {
-     Meteor.users._ensureIndex({ "profile.location":'2dsphere'});
+    Meteor.users._ensureIndex({ groupId: 1 });
+    Meteor.users._ensureIndex({ "profile.location":'2dsphere'});
     Meteor.methods({
         createGroupUser: createGroupUser,
     });
@@ -14,7 +15,8 @@ Meteor.methods({
     setUserProfileProperty: setUserProfileProperty,
     updateUserLocation:     updateUserLocation,
     startSync:              startSync,
-    endSync:                endSync
+    endSync:                endSync,
+    addUsersToGroup:        addUsersToGroup
 });
 
 
@@ -54,7 +56,7 @@ function addUsersToGroup(userIds, groupId) {
     }
 
     _.each(userIds, function(id) {
-        Users.update(id, { $set: { groupId: groupId } });
+        setUserProfileProperty(id, 'groupId', groupId);
     });
 }
 

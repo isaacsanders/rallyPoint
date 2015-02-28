@@ -55,16 +55,20 @@ function checkLocationError() {
 
 function subcribeToUsersSyncingNearLoc() {
     var loc       = Session.get('location'),
-        isSycning = Meteor.user().profile.isSycning;
-    if (loc && isSycning) Meteor.subscribe('usersSyncingNearLoc', loc);
+        isSyncing = Meteor.user().profile.isSyncing;
+    if (loc && isSyncing) {
+        Meteor.subscribe('usersSyncingNearLoc', loc, function(err) {
+        });
+    }
 }
 
 function tryConnectToGroup() {
     clearTimeout(self.connectTimer);
     var usersSyncing = Meteor.users.find();
-
+    Util.log('TRY CONNECT!!!!!');
     if (usersSyncing.count() > 1) {
-        self.connectTimer = setTimeout(connect, 4000);
+        Util.log('SETTING TIMER!!!!!', usersSyncing.fetch());
+        self.connectTimer = setTimeout(connect, 3000);
     }
 
     function connect() {
