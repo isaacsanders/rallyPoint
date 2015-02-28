@@ -55,7 +55,7 @@ function checkLocationError() {
 
 function subcribeToUsersSyncingNearLoc() {
     var loc       = Session.get('location'),
-        isSyncing = Meteor.user().profile.isSyncing;
+        isSyncing = Meteor.user() && Meteor.user().profile.isSyncing;
     if (loc && isSyncing) {
         Meteor.subscribe('usersSyncingNearLoc', loc, function(err) {
         });

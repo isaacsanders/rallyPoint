@@ -35,17 +35,18 @@ function updateUserLocation(location) {
     }
 }
 
-function startSync() {
-    changeSyncState(true);
+function startSync(userId) {
+    changeSyncState(userId, true);
 }
 
-function endSync() {
-    changeSyncState(false);
+function endSync(userId) {
+    changeSyncState(userId, false);
 }
 
-function changeSyncState(isSyncing) {
-    var time = isSyncing && Date.now();
-    Meteor.users.update(Meteor.userId(), { $set: { 'profile.isSyncing': isSyncing, 'profile.syncStartedAt': time } });
+function changeSyncState(userId, isSyncing) {
+    var time   = isSyncing && Date.now();
+    var userId = userId || Meteor.userId();
+    Meteor.users.update(userId, { $set: { 'profile.isSyncing': isSyncing, 'profile.syncStartedAt': time } });
 }
 
 function addUsersToGroup(userIds, groupId) {
@@ -55,8 +56,11 @@ function addUsersToGroup(userIds, groupId) {
         Groups.update(groupId, { $addToSet: { userIds: { $each: userIds } } });
     }
 
-    _.each(userIds, function(id) {
-        setUserProfileProperty(id, 'groupId', groupId);
+    Util.log('ADD-USERS-TO-GROUP', groupId);
+
+    _.each(userIds, function(userId) {
+        setUserProfileProperty(userId, 'groupId', groupId);
+        endSync(userId);
     });
 }
 
