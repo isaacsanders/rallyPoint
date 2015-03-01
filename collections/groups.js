@@ -12,35 +12,28 @@ function setGroupRallyState(groupId, isRallying) {
 }
 
 function startRally(groupId) {
+  var currentUser = Meteor.user();
+  var group = Groups.findOne({ _id: groupId });
+  var users = Meteor.users.find({
+    _id: { $ne: currentUser._id },
+    "profile.groupId": group._id
+  });
+  Push.debug = true;
+  users.forEach(function(user) {
+    Util.log("pushing");
+    var push = Push.send({
+      from: "Test",
+      title: "Rally!",
+      text: "Time to meet up with your group.",
+      query: {
+        userId: user._id
+      }
+    });
+    Util.log(push);
+  });
   setGroupRallyState(groupId, true);
 }
 
 function stopRally(groupId) {
   setGroupRallyState(groupId, false);
 }
-
-
-
- // function startRally() {
-    // var currentUser = Meteor.user;
-    // var group = Groups.findOne();
-    // var users = Meteor.users.find({
-    //   _id: {
-    //     $in: group.userIds,
-    //     $ne: currentUser._id
-    //   }
-    // });
-  //   users.forEach(function(user) {
-  //     Push.send({
-  //       from: currentUser.profile.name,
-  //       title: "Rally!",
-  //       text: "Time to meet up with your group.",
-  //       query: {
-  //         userId: user._id
-  //       },
-  //       token: {
-  //         apn: "com.idujdf3kb2ankea9utre"
-  //       }
-  //     });
-  //   });
-  // }
