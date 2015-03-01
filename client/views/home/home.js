@@ -74,6 +74,7 @@ function tryConnectToGroup() {
     }
 
     function connect() {
+        self.performedConnection = true;
         var lastUserToSync  = Meteor.user(), 
                     userIds = [],
                     groupId;
@@ -89,9 +90,7 @@ function tryConnectToGroup() {
         });
 
         if (lastUserToSync._id == Meteor.userId() && isSyncing()) {
-            self.performedConnection = true;
             Meteor.call('addUsersToGroup', userIds, groupId);
-            Util.log('ADD TO GROUP:', lastUserToSync._id,  Meteor.userId(), userIds, groupId);
         }
     }
 }
