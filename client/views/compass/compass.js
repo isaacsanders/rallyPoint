@@ -4,7 +4,7 @@ Template.compass.helpers({
 });
 
 Template.compass.events({
-  "click a.home": function(event, template) {
+  "click #toggle": function(event, template) {
     if (template.interval) {
       clearInterval(template.interval);
     }
@@ -12,7 +12,7 @@ Template.compass.events({
 })
 
 Template.compass.rendered = function() {
-  var self = this;
+  var self = Template.instance();
   var $compass = self.$(".compass");
   var $heading = self.$(".heading-value");
   var $distance = self.$(".distance-value");
@@ -34,10 +34,12 @@ Template.compass.rendered = function() {
         var ll = Util.getLatLng();
         var myLocation = new google.maps.LatLng(ll.lat, ll.lng);
 
-        var users = Meteor.users.find();
+        var currentUser = Meteor.user;
+        var group = Groups.findOne();
+        var users = Meteor.users.find({ _id: { $in: group.userIds, $ne: currentUser._id } });
         var bounds = new google.maps.LatLngBounds();
         users.forEach(function(user) {
-          var LatLng = new google.maps.LatLng(user.location.latitude, user.location.longitude);
+          var LatLng = new google.maps.LatLng(user.profile.location.latitude, user.profile.location.longitude);
           bounds.extend(latLng);
         });
 
