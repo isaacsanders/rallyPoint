@@ -36,7 +36,8 @@ var panCurrentLocation = function(myMap){
   })	
   	
   myMap.instance.fitBounds(bounds);	
-  // console.log(bounds.getCenter());
+  myMap.instance.setZoom(myMap.instance.getZoom()+1);   
+
   return bounds.getCenter();
 }
 
@@ -55,7 +56,7 @@ var updateMarkers= function(myMap, centerPoint){
       strokeOpacity: 0.3,
       strokeWeight: 2,
       fillColor: 'Red',
-      fillOpacity: 0.3,
+      fillOpacity: 1,
       map: myMap.instance,      
       radius: 3
     };
