@@ -52,5 +52,13 @@ Template.app.events({
   },
   "click #leave": function (event, template) {
     Meteor.call("leaveGroup", Meteor.userId());
+  },
+  "click footer": function(event, template){
+    Meteor.call("rallyGroup", null);
+    if(Meteor.isCordova){//is mobile app
+      currentScreen.set(rallypt.ScreenEnum.COMPASS);  
+    }else{
+      currentScreen.set(rallypt.ScreenEnum.MAP);
+    }    
   }
 });
