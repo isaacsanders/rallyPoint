@@ -16,16 +16,15 @@ Template.home.rendered = function() {
 }
  
 Template.home.events({
-    'click .submit': toggleFindingGroupMembers
+    'click .submit': toggleGroupMembers
 });
 
 
-function toggleFindingGroupMembers(e) {
+function toggleGroupMembers(e) {
     self.finder.hasClass(FINDING_CLASS) ? stopFindingGroupMembers(e) : findGroupMemebers(e);
 }
 
 function findGroupMemebers(event) {
-    event.preventDefault();
     if (isLocationOff) return;
     if (!self.nameInput.val()) return issueNonameInputAlert();
     self.finder.addClass(FINDING_CLASS);
@@ -60,8 +59,7 @@ function subcribeToUsersSyncingNearLoc() {
     var loc       = Session.get('location'),
         isSyncing = Meteor.user() && Meteor.user().profile.isSyncing;
     if (loc && isSyncing) {
-        Meteor.subscribe('usersSyncingNearLoc', loc, function(err) {
-        });
+        Meteor.subscribe('usersSyncingNearLoc', loc);
     }
 }
 

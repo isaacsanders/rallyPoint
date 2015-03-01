@@ -1,7 +1,11 @@
-$(document).ready(startWatchingPosition);
+Meteor.startup(function() {
+    if (Meteor.isCordova) {
+       document.addEventListener('deviceready', startWatchingPosition, false);
+    } else {
+      $(document).ready(startWatchingPosition);
+    }
+});
 
-// options for watchPosition
-var options = { enableHighAccuracy: true, timeout: 10000000, maximumAge: 0 };
 
 function onError(newError) {
   Session.set('locationError', newError);
@@ -14,8 +18,8 @@ function onPosition(newLocation) {
 }
 
 function startWatchingPosition() {
-  Meteor.startup(function() {
-    Tracker.autorun(function () {
+  // options for watchPosition
+  var options = { enableHighAccuracy: true, timeout: 10000000, maximumAge: 0 };
       var geo = Geolocation.currentPosition();
       onPosition(geo);
     });
