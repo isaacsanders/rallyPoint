@@ -35,6 +35,7 @@ function findGroupMemebers(event) {
 
 function stopFindingGroupMembers() {
     if (isLocationOff) return;
+    self.performedConnection = false;
     self.finder.removeClass(FINDING_CLASS);
     Meteor.call('endSync');
 }
@@ -56,18 +57,18 @@ function checkLocationError() {
 }
 
 function subcribeToUsersSyncingNearLoc() {
-    var loc       = Session.get('location'),
-        isSyncing = Meteor.user() && Meteor.user().profile.isSyncing;
-    if (loc && isSyncing) {
+    var loc = Session.get('location');
+    if (loc && isSyncing()) {
         Meteor.subscribe('usersSyncingNearLoc', loc);
     }
 }
 
 function tryConnectToGroup() {
+    if (self.performedConnection) return;
+    Util.log('TRYING TO CONNECT');
     clearTimeout(self.connectTimer);
     var usersSyncing = Meteor.users.find();
-    Util.log('TRYING TO CONNECT');
-    if (usersSyncing.count() > 1) {
+    if (usersSyncing.count() > 1 && isSyncing()) {
         Util.log('SETTING TIMER!!!!!', usersSyncing.fetch());
         self.connectTimer = setTimeout(connect, 2500);
     }
@@ -78,6 +79,7 @@ function tryConnectToGroup() {
                     groupId;
 
         usersSyncing.forEach(function(user) {
+             Util.log('TIME-COMPARE', user.profile.syncStartedAt, lastUserToSync.profile.syncStartedAt, user.profile.syncStartedAt > lastUserToSync.profile.syncStartedAt);
             if (user.profile.groupId) {
                 groupId = user.profile.groupId;
             } else if (user.profile.syncStartedAt > lastUserToSync.profile.syncStartedAt) {
@@ -86,9 +88,14 @@ function tryConnectToGroup() {
             userIds.push(user._id);
         });
 
-        if (lastUserToSync._id == Meteor.userId()) {
+        if (lastUserToSync._id == Meteor.userId() && isSyncing()) {
+            self.performedConnection = true;
             Meteor.call('addUsersToGroup', userIds, groupId);
             Util.log('ADD TO GROUP:', lastUserToSync._id,  Meteor.userId(), userIds, groupId);
         }
     }
+}
+
+function isSyncing() {
+    return Meteor.user() && Meteor.user().profile.isSyncing;
 }
