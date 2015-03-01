@@ -30,7 +30,7 @@ function createGroupUser(name) {
 }
 
 function leaveGroup(userId) {
-    setUserProfileProperty(userId, groupId, "");
+    setUserProfileProperty(userId, "groupId", "");
 }
 
 function updateUserLocation(location) {
