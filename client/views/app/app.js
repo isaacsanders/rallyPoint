@@ -38,6 +38,6 @@ Template.app.events({
     }
   },
   "click #leave": function (event, template) {
-    Meteor.call("leaveGroup", Meteor.userId);
+    Meteor.call("leaveGroup", Meteor.userId());
   }
 });

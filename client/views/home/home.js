@@ -9,9 +9,6 @@ Template.home.created = function() {
 Template.home.rendered = function() {
     self.finder     = self.$('.find-group'),
     self.nameInput  = self.$('.name');
-    $('.submit')
-        .on('vmousedown', findGroupMemebers)
-        .on('vmouseup',   stopFindingGroupMembers);
 
     self.autorun(checkLocationError);
     self.autorun(subcribeToUsersSyncingNearLoc);
@@ -19,9 +16,13 @@ Template.home.rendered = function() {
 }
  
 Template.home.events({
-    'mouseup .submit, mouseout .submit': stopFindingGroupMembers
+    'click .submit': toggleFindingGroupMembers
 });
 
+
+function toggleFindingGroupMembers(e) {
+    self.finder.hasClass(FINDING_CLASS) ? stopFindingGroupMembers(e) : findGroupMemebers(e);
+}
 
 function findGroupMemebers(event) {
     event.preventDefault();
@@ -67,6 +68,7 @@ function subcribeToUsersSyncingNearLoc() {
 function tryConnectToGroup() {
     clearTimeout(self.connectTimer);
     var usersSyncing = Meteor.users.find();
+    Util.log('TRYING TO CONNECT');
     if (usersSyncing.count() > 1) {
         Util.log('SETTING TIMER!!!!!', usersSyncing.fetch());
         self.connectTimer = setTimeout(connect, 2500);
