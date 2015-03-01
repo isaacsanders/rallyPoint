@@ -65,8 +65,18 @@ Template.app.events({
 
   "click .fa-user-plus": startSyncing,
 
-  "click #add-users .stop": stopSyncing
+  "click #add-users .stop": stopSyncing,
+
+  "click footer": function(event, template){
+      Meteor.call("rallyGroup", null);
+      if(Meteor.isCordova){//is mobile app
+        currentScreen.set(rallypt.ScreenEnum.COMPASS);  
+      }else{
+        currentScreen.set(rallypt.ScreenEnum.MAP);
+      }    
+  }
 });
+
 
 
 function startSyncing() {
@@ -77,14 +87,6 @@ function startSyncing() {
 function stopSyncing() {
   self.addUsersModal.modal('hide');
 }
-
-
-
-
-
-
-
-
 
 
 

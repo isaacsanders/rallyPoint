@@ -8,6 +8,11 @@
   header {
     padding: 15px 25px;
 
+    h3 {
+      text-align:center;
+      display:inline;
+    }
+
     i {
       cursor: pointer;
       transition: color ease 0.35s;
@@ -32,6 +37,7 @@
   footer {
     text-align: center;
     background-color: darkred;
+    cursor: pointer;
   }
 }
 
