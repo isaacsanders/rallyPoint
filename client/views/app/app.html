@@ -3,15 +3,15 @@
 		<button text="Leave" id="leave">Leave</button>	
 		<button><i id="toggle" class={{toggleIcon}}></i></button>
 	</div>    
-    {{#if currentScreen 0}}
-    	{{> friend}}
-    {{else}}
-    	{{#if currentScreen 1}}
-    		{{> compass}}
-    	{{else}}
-    		{{>map}}
-    	{{/if}}
-    {{/if}}    
+        <div class={{friendVisible}}>
+           {{> friend}}
+        </div>
+        <div class={{compassVisible 1}}>    	   
+           {{> compass}}
+        </div>
+        <div class={{compassVisible 2}}>
+           {{> map}} 
+        </div>    
     <div class="app-bottom">
     	<button>{{rallyText}}</button>
     </div>

@@ -5,36 +5,49 @@ rallypt.ScreenEnum = {
     MAP : 2,
 };
 
-rallypt.currentScreen = rallypt.ScreenEnum.MAP;
+var currentScreen = new ReactiveVar(rallypt.ScreenEnum.FRIENDS, null);
 
 Template.app.helpers({
     toggleIcon: function () {
-      if(rallypt.currentScreen == rallypt.ScreenEnum.COMPASS){//in compass view        
+      if(currentScreen.get() == rallypt.ScreenEnum.COMPASS){//in compass view        
         return "fa fa-compass";
-      }else if(rallypt.currentScreen == rallypt.ScreenEnum.MAP){// map view
+      }else if(currentScreen.get() == rallypt.ScreenEnum.MAP){// map view
         return "fa fa-street-view";
       }else{//friend view (add button)
         return "fa fa-plus";
       }
     },
     rallyText: function (){
-      if(rallypt.currentScreen == rallypt.ScreenEnum.COMPASS){
+      if(currentScreen.get() == rallypt.ScreenEnum.COMPASS){
         return "Rally!";
       }else{
         return "Stop Rally!";
       }
+    },    
+    friendVisible:function(){
+      if(currentScreen.get()==rallypt.ScreenEnum.FRIENDS){
+        console.log("showing friendVisible");
+        return true;        
+      }
+      console.log("hiding invisible friends");
+      return false;
     },
-    currentScreen: function(currentInt){
-      return currentInt == rallypt.currentScreen;
+    compassVisible: function(currentInt){
+      if(currentScreen.get()== currentInt){
+        // console.log()
+        return "visible";        
+      }else{        
+        return "hidden";
+      }
     }
   });
 
 Template.app.events({
   "click #toggle": function (event, template) {
-    if(rallypt.currentScreen== rallypt.ScreenEnum.COMPASS){
-      rallypt.currentScreen= rallypt.ScreenEnum.MAP;
+    if(currentScreen.get()== rallypt.ScreenEnum.COMPASS){
+      currentScreen.set(rallypt.ScreenEnum.MAP);
     }else{
-      rallypt.currentScreen= rallypt.ScreenEnum.COMPASS;
+      currentScreen.set(rallypt.ScreenEnum.COMPASS);
     }
   },
   "click #leave": function (event, template) {
