@@ -16,7 +16,7 @@ App.icons({
 App.launchScreens({
   iphone_2x: "public/images/LaunchScreen.png",
   iphone5: "public/images/LaunchScreen-iPhone5.png",
-  images6p_portrait: "public/images/LaunchScreen-iPhone6p-Portrait.png"
+  iphone6p_portrait: "public/images/LaunchScreen-iPhone6p-Portrait.png"
 });
 
 App.setPreference('StatusBarOverlaysWebView', false);
