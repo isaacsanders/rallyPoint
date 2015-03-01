@@ -5,7 +5,7 @@ rallypt.ScreenEnum = {
     MAP : 2,
 };
 
-rallypt.currentScreen = rallypt.ScreenEnum.MAP;
+var currentScreen = new ReactiveVar(rallypt.ScreenEnum.FRIENDS, null);
 
 Template.app.helpers({
 
@@ -25,10 +25,23 @@ Template.app.helpers({
       }else{
         return "Stop Rally";
       }
+    },    
+    friendVisible:function(){
+      if(currentScreen.get()==rallypt.ScreenEnum.FRIENDS){
+        console.log("showing friendVisible");
+        return true;        
+      }
+      console.log("hiding invisible friends");
+      return false;
     },
 
-    currentScreen: function(currentInt){
-      return currentInt == rallypt.currentScreen;
+    compassVisible: function(currentInt) {
+      if(currentScreen.get()== currentInt){
+        // console.log()
+        return "visible";        
+      }else{        
+        return "hidden";
+      }
     }
   });
 
@@ -36,10 +49,10 @@ Template.app.helpers({
 Template.app.events({
 
   "click #toggle": function (event, template) {
-    if(rallypt.currentScreen== rallypt.ScreenEnum.COMPASS){
-      rallypt.currentScreen= rallypt.ScreenEnum.MAP;
+    if(currentScreen.get()== rallypt.ScreenEnum.COMPASS){
+      currentScreen.set(rallypt.ScreenEnum.MAP);
     }else{
-      rallypt.currentScreen= rallypt.ScreenEnum.COMPASS;
+      currentScreen.set(rallypt.ScreenEnum.COMPASS);
     }
   },
   

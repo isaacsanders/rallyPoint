@@ -6,15 +6,15 @@
     	</header>    
 
         <main>
-            {{#if currentScreen 0}}
-            	{{> friend}}
-            {{else}}
-            	{{#if currentScreen 1}}
-            		{{> compass}}
-            	{{else}}
-            		{{>map}}
-            	{{/if}}
-            {{/if}}    
+            <div class={{friendVisible}}>
+                {{> friendList}}
+            </div>
+            <div class={{compassVisible 1}}>           
+               {{> compass}}
+            </div>
+            <div class={{compassVisible 2}}>
+               {{> map}} 
+            </div>       
         </main>
 
         <footer class="app-bottom">

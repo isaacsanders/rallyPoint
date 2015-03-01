@@ -1,8 +1,9 @@
 if (Meteor.isClient) {
 	// This only runs on client
 	Template.friendList.helpers({
-		toggleIcon: function () {
+		friends: function () {
 			return Meteor.users.find({});
 		}
 	});
+
 }

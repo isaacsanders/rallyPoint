@@ -66,6 +66,7 @@ function subcribeToUsersSyncingNearLoc() {
 function tryConnectToGroup() {
     clearTimeout(self.connectTimer);
     var usersSyncing = Meteor.users.find();
+    Util.log('TRYING TO CONNECT');
     if (usersSyncing.count() > 1) {
         Util.log('SETTING TIMER!!!!!', usersSyncing.fetch());
         self.connectTimer = setTimeout(connect, 2500);
