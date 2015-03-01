@@ -36,7 +36,7 @@ var panCurrentLocation = function(myMap){
   })	
   	
   myMap.instance.fitBounds(bounds);	
-  myMap.instance.setZoom(myMap.instance.getZoom()+1);   
+  // myMap.instance.setZoom(myMap.instance.getZoom()+1);   
 
   return bounds.getCenter();
 }
@@ -66,8 +66,9 @@ var updateMarkers= function(myMap, centerPoint){
   var flagLoc= new google.maps.LatLng(centerPoint.k, centerPoint.D);
   markers[0] = new google.maps.Marker({
     position: flagLoc,
-    map: myMap.instance,
-    icon: '../images/AppIcon.png'
+    scaledSize: new google.maps.Size(150, 150),
+    map: myMap.instance,    
+    icon: '../images/AppIcon_circle2.png'
   });   
 
   var i=1;
@@ -85,7 +86,7 @@ var updateMarkers= function(myMap, centerPoint){
       markers[i++] = new google.maps.Circle(populationOptions);   
     	}else{
     // Add the circle for this city to the map.     
-      populationOptions.fillColor= 'Orange';
+      populationOptions.fillColor= '#286f7e';
       console.log("drawing "+ populationOptions.fillColor+" dot at "+ populationOptions.center);
       markers[i++] = new google.maps.Circle(populationOptions);     
     }
