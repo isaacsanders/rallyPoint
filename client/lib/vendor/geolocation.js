@@ -14,7 +14,10 @@ function onPosition(newLocation) {
 }
 
 function startWatchingPosition() {
-  if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(onPosition, onError, options);
-  }
+  Meteor.startup(function() {
+    Tracker.autorun(function () {
+      var geo = Geolocation.currentPosition();
+      onPosition(geo);
+    });
+  });
 }
