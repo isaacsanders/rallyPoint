@@ -37,7 +37,7 @@ Template.compass.rendered = function() {
         var users = Meteor.users.find();
         var bounds = new google.maps.LatLngBounds();
         users.forEach(function(user) {
-          var LatLng = new google.maps.LatLng(user.location.latitude, user.location.longitude);
+          var LatLng = new google.maps.LatLng(user.profile.location.latitude, user.profile.location.longitude);
           bounds.extend(latLng);
         });
 
