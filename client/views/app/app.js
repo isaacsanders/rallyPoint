@@ -81,11 +81,13 @@ Template.app.events({
 
 function startSyncing() {
   self.addUsersModal.modal('show');
+  Meteor.call('startSyncing');
 }
 
 
 function stopSyncing() {
   self.addUsersModal.modal('hide');
+  Meteor.call('stopSyncing');
 }
 
 
