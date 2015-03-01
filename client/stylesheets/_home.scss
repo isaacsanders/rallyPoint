@@ -8,6 +8,7 @@
   width: 100%;
   text-align: center;
   height: 100%;
+  overflow: hidden;
   background: #4096ee; /* Old browsers */
 background: -moz-radial-gradient(center, ellipse cover,  #4096ee 0%, #70b1be 0%, #04434f 100%); /* FF3.6+ */
 background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#4096ee), color-stop(0%,#70b1be), color-stop(100%,#04434f)); /* Chrome,Safari4+ */
@@ -20,6 +21,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4096ee', end
 
   img {
     width: 550px;
+    margin: 0 -80px;
   }
 
   .find-group {
