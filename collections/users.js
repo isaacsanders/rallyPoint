@@ -35,7 +35,7 @@ function leaveGroup(userId) {
 
 function updateUserLocation(location) {
     var userId = Meteor.userId();
-    if (userId && location) {
+    if (userId && location && location.accuracy) {
         setUserProfileProperty(Meteor.userId(), 'location', Util.locToMongo(location));
     }
 }

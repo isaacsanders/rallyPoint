@@ -1,9 +1,11 @@
 Meteor.publish('usersSyncingNearLoc', function(location) {
+    if (!location.accuracy) return;
+    
     var query = 
     { 
         'profile.location': { $nearSphere: { 
             $geometry:    Util.locToMongo(location),
-            $maxDistance: 50 + location.coords.accuracy
+            $maxDistance: 50 + location.accuracy
         }},
         'profile.isSyncing': true
     };
