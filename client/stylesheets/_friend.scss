@@ -1,6 +1,10 @@
-li {
+.friend {
   position: relative;
   list-style: none;
   padding: 15px;
   border-bottom: #eee solid 1px;
+
+  .dist {
+    float: right;
+  }
 }
