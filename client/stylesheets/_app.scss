@@ -1,12 +1,15 @@
 .app {
-  display: flex;
-  flex-flow: column;
+  padding-top: 100px;
   height: 100%;
   color: white;
   font-size: 50px;
 
   header {
     padding: 15px 25px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
 
     h3 {
       width:  400px;

@@ -62,6 +62,7 @@ function addUsersToGroup(userIds, groupId) {
     }
 
     _.each(userIds, function(userId) {
+        Util.log('ADD-USER:', userId);
         setUserProfileProperty(userId, 'groupId', groupId);
         endSync(userId);
     });

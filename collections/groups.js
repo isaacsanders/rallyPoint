@@ -8,7 +8,7 @@ Meteor.methods({
 function setGroupRallyState(groupId, isRallying) {
   check(groupId, String);
   check(isRallying, Boolean);
-  Groups.update(groupId, { isRallying: isRallying });
+  Groups.update(groupId, { $set: { isRallying: isRallying } });
 }
 
 function startRally(groupId) {
