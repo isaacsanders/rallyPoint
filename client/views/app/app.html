@@ -1,8 +1,9 @@
 <template name='app'>
     <div class='app'>
     	<header>
-    		<i id="leave" class="fa fa-sign-out" ></i>	
+    		<i id="leave" class="fa fa-sign-out" ></i>
     		<i id="toggle" class="{{toggleIcon}}"></i>
+            <h3>Group Members</h3>
     	</header>    
 
         <main>
@@ -20,5 +21,14 @@
         <footer class="app-bottom">
         	{{rallyText}}
         </footer>
+    </div>
+
+    <div id='add-users' class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <h1>Syncing</h1>
+            <button class='stop btn btn-primary'>stop</button>
+        </div>
+      </div>
     </div>
 </template>
