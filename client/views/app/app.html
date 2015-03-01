@@ -2,24 +2,25 @@
     <div class='app'>
     	<header>
     		<i id="leave" class="fa fa-sign-out" ></i>
-    		<i id="toggle" class="{{toggleIcon}}"></i>
-            <h3>Group Members</h3>
+    		<i id="toggle" class="fa {{ toggleIconClass }}"></i>
+            <h3>{{ paneText }}</h3>
     	</header>    
 
         <main>
-            <div class={{friendVisible}}>
-                {{> friendList}}
-            </div>
-            <div class={{compassVisible 1}}>           
-               {{> compass}}
-            </div>
-            <div class={{compassVisible 2}}>
-               {{> map}} 
-            </div>       
+            {{#if renderFriendsList }}
+                {{> friendList }}
+            {{else }}
+                {{#if renderCompass }}
+                    {{> compass }}
+                {{else }}
+                    {{> map }}
+                {{/if}}
+            {{/if}}
+
         </main>
 
         <footer class="app-bottom">
-        	{{rallyText}}
+        	{{ rallyText }}
         </footer>
     </div>
 

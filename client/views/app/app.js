@@ -1,98 +1,85 @@
-var rallypt={};
-var self;
-rallypt.ScreenEnum = {
-    FRIENDS : 0,
-    COMPASS : 1,
-    MAP : 2,
-};
-
-var currentScreen = new ReactiveVar(rallypt.ScreenEnum.FRIENDS, null);
+var self,
+    renderFriendsList = new ReactiveVar(false),
+    renderCompass     = new ReactiveVar(false),
+    paneText          = new ReactiveVar(''),
+    toggleIconClass   = new ReactiveVar(''),
+    rallyText         = new ReactiveVar('');
 
 Template.app.created = function() {
-  self = this;
+    self = this;
 };
 
 Template.app.rendered = function() {
-  self.addUsersModal = self.$('#add-users');
-  self.addUsersModal.on('hidden.bs.modal', stopSyncing);
+    self.addUsersModal = self.$('#add-users');
+    self.addUsersModal.on('hidden.bs.modal', stopSyncing);
+    self.paneToggle = self.$('#toggle');
+    self.autorun(updateCurrentPaneParams);
+    self.autorun(updateRallyState);
 };
 
 Template.app.helpers({
-    toggleIcon: function () {
-      if(currentScreen.get() == rallypt.ScreenEnum.MAP){//in compass view        
-        return "fa fa-compass";
-      }else if(currentScreen.get() == rallypt.ScreenEnum.COMPASS){// map view
-        return "fa fa-street-view";
-      }else{//friend view (add button)
-        return "fa fa-user-plus";
-      }
-    },
-    rallyText: function (){
-      if(currentScreen.get() == rallypt.ScreenEnum.FRIENDS){
-        return "Rally!";
-      }else{
-        return "Stop Rally!";
-      }
-    },    
-    friendVisible:function(){
-      if(currentScreen.get()==rallypt.ScreenEnum.FRIENDS){        
-        return true;        
-      }else{      
-        return false;
-      }
-    },
-    compassVisible: function(currentInt){
-      if(currentScreen.get()== currentInt){
-        // console.log()
-        return "visible";        
-      }else{        
-        return "hidden";
-      }
-    }
-  });
+    renderFriendsList: function() { return renderFriendsList.get() },
+    renderCompass:     function() { return renderCompass.get()     },
+    paneText:          function() { return paneText.get()          },
+    toggleIconClass:   function() { return toggleIconClass.get()   },
+    rallyText:         function() { return rallyText.get()         }
+});    
+   
 
 Template.app.events({
-  "click #toggle": function (event, template) {
-    if(currentScreen.get()== rallypt.ScreenEnum.COMPASS){
-      currentScreen.set(rallypt.ScreenEnum.MAP);
-    }else if(currentScreen.get()== rallypt.ScreenEnum.MAP){
-      currentScreen.set(rallypt.ScreenEnum.COMPASS);
-    }
-  },
 
-  "click #leave": function (event, template) {
-    Meteor.call("leaveGroup", Meteor.userId());
-  },
+    'click #leave': leaveGroup,
 
-  "click .fa-user-plus": startSyncing,
+    'click .fa-user-plus': startSyncing,
 
-  "click #add-users .stop": stopSyncing,
+    'click #add-users .stop': stopSyncing,
 
-  "click footer": function(event, template){
-      Meteor.call("rallyGroup", null);
-      if(Meteor.isCordova){//is mobile app
-        currentScreen.set(rallypt.ScreenEnum.COMPASS);  
-      }else{
-        currentScreen.set(rallypt.ScreenEnum.MAP);
-      }    
-  }
+    'click footer': toggleRallyState
 });
 
+function updateCurrentPaneParams() {
+    if (renderFriendsList.get()) {
+        paneText.set('Group Members');
+        toggleIconClass.set('fa-user-plus');
+    } else if (renderCompass.get()) {
+        paneText.set('Compass View');
+        toggleIconClass.set('fa-street-view');
+    } else {
+        paneText.set('Street View');
+        toggleIconClass.set('fa-compass');
+    }
+}
 
+
+function leaveGroup() {
+    Meteor.call('leaveGroup', Meteor.userId());
+}
 
 function startSyncing() {
-  self.addUsersModal.modal('show');
-  Meteor.call('startSyncing');
+    self.addUsersModal.modal('show');
+    Meteor.call('startSync');
 }
-
 
 function stopSyncing() {
-  self.addUsersModal.modal('hide');
-  Meteor.call('stopSyncing');
+    self.addUsersModal.modal('hide');
+    Meteor.call('endSync');
 }
 
+function toggleRallyState() {
+    var group = Groups.findOne();
+    group.isRallying ? Meteor.call('stopRally', group._id) : Meteor.call('startRally', group._id);
+}
 
-
-
-
-
+function updateRallyState() {
+    if (Groups.findOne().isRallying) {
+        rallyText.set('Stop Rally');
+        renderFriendsList.set(false);
+        renderCompass.set(Meteor.isCordova);
+        !Meteor.isCordova && self.paneToggle.hide();
+    } else {
+        rallyText.set('Start Rally');
+        renderFriendsList.set(true);
+        renderCompass.set(false);
+        self.paneToggle.show();
+    }
+}

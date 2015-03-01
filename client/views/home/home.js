@@ -78,13 +78,17 @@ function tryConnectToGroup() {
                     groupId;
 
         usersSyncing.forEach(function(user) {
+            if (user.profile.groupId) {
+                groupId = user.profile.groupId;
+            } else if (user.profile.syncStartedAt > lastUserToSync.profile.syncStartedAt) {
+                lastUserToSync = user;
+            }
             userIds.push(user._id);
-            user.profile.groupId && (groupId = user.profile.groupId);
-            if (user.profile.syncStartedAt > lastUserToSync.profile.syncStartedAt) lastUserToSync = user;
         });
 
         if (lastUserToSync._id == Meteor.userId()) {
             Meteor.call('addUsersToGroup', userIds, groupId);
+            Util.log('ADD TO GROUP:', lastUserToSync._id,  Meteor.userId(), userIds, groupId);
         }
     }
 }
