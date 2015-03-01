@@ -1,18 +1,24 @@
 <template name='app'>
-	<div class="app-top">
-		<button text="Leave" id="leave">Leave</button>	
-		<button><i id="toggle" class={{toggleIcon}}></i></button>
-	</div>    
-    {{#if currentScreen 0}}
-    	{{> friend}}
-    {{else}}
-    	{{#if currentScreen 1}}
-    		{{> compass}}
-    	{{else}}
-    		{{>map}}
-    	{{/if}}
-    {{/if}}    
-    <div class="app-bottom">
-    	<button>{{rallyText}}</button>
+    <div class='app'>
+    	<header>
+    		<i id="leave" class="fa fa-sign-out" ></i>	
+    		<i id="toggle" class="{{toggleIcon}}"></i>
+    	</header>    
+
+        <main>
+            {{#if currentScreen 0}}
+            	{{> friend}}
+            {{else}}
+            	{{#if currentScreen 1}}
+            		{{> compass}}
+            	{{else}}
+            		{{>map}}
+            	{{/if}}
+            {{/if}}    
+        </main>
+
+        <footer class="app-bottom">
+        	{{rallyText}}
+        </footer>
     </div>
 </template>
