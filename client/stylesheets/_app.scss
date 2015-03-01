@@ -19,6 +19,8 @@
 
     #leave {
       float: left;
+      -ms-transform: rotate(180deg); /* IE 9 */
+      -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
       transform: rotate(180deg);
     }
 
@@ -33,11 +35,42 @@
   }
 }
 
-
 .hidden {
   visibility: "hidden";
 }
 
 .visible {
   visibility: "visible";
+}
+
+#add-users {
+  text-align: center;
+
+  .modal-content {
+    padding: 20px;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+    margin-left: 10px;
+
+    &::before {
+      content: ' ';
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      background: url('images/ajax_loader.gif');
+      background-size: 100% 100%;
+      position: relative;
+      left: -12px;
+      top: 3px;
+
+    }
+  }
+
+  button {
+    margin: 10px;
+    padding: 10px;
+    width: 80%;
+  }
 }

@@ -1,4 +1,5 @@
 var rallypt={};
+var self;
 rallypt.ScreenEnum = {
     FRIENDS : 0,
     COMPASS : 1,
@@ -6,6 +7,15 @@ rallypt.ScreenEnum = {
 };
 
 var currentScreen = new ReactiveVar(rallypt.ScreenEnum.FRIENDS, null);
+
+Template.app.created = function() {
+  self = this;
+};
+
+Template.app.rendered = function() {
+  self.addUsersModal = self.$('#add-users');
+  self.addUsersModal.on('hidden.bs.modal', stopSyncing);
+};
 
 Template.app.helpers({
     toggleIcon: function () {
@@ -46,11 +56,38 @@ Template.app.events({
       currentScreen.set(rallypt.ScreenEnum.MAP);
     }else if(currentScreen.get()== rallypt.ScreenEnum.MAP){
       currentScreen.set(rallypt.ScreenEnum.COMPASS);
-    }else{
-      alert("find more friends");
     }
   },
+
   "click #leave": function (event, template) {
     Meteor.call("leaveGroup", Meteor.userId());
-  }
+  },
+
+  "click .fa-user-plus": startSyncing,
+
+  "click #add-users .stop": stopSyncing
 });
+
+
+function startSyncing() {
+  self.addUsersModal.modal('show');
+}
+
+
+function stopSyncing() {
+  self.addUsersModal.modal('hide');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
