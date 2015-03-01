@@ -18,7 +18,7 @@ Template.app.helpers({
       }
     },
     rallyText: function (){
-      if(currentScreen.get() == rallypt.ScreenEnum.COMPASS){
+      if(currentScreen.get() == rallypt.ScreenEnum.FRIENDS){
         return "Rally!";
       }else{
         return "Stop Rally!";
