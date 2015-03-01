@@ -16,7 +16,8 @@ Meteor.methods({
     setUserProfileProperty: setUserProfileProperty,
     updateUserLocation:     updateUserLocation,
     startSync:              startSync,
-    endSync:                endSync
+    endSync:                endSync,
+    leaveGroup:             leaveGroup
 });
 
 
@@ -26,6 +27,10 @@ function createGroupUser(name) {
         userFields   = _.extend(credentials, { profile: { name: name }});
     Accounts.createUser(userFields);
     return credentials;
+}
+
+function leaveGroup(userId) {
+    setUserProfileProperty(userId, groupId, "");
 }
 
 function updateUserLocation(location) {

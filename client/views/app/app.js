@@ -36,6 +36,8 @@ Template.app.events({
     }else{
       rallypt.currentScreen= rallypt.ScreenEnum.COMPASS;
     }
-    console.log(rallypt.currentScreen);
+  },
+  "click #leave": function (event, template) {
+    Meteor.call("leaveGroup", Meteor.userId);
   }
 });
