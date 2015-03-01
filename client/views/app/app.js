@@ -27,8 +27,9 @@ Template.app.helpers({
     friendVisible:function(){
       if(currentScreen.get()==rallypt.ScreenEnum.FRIENDS){        
         return true;        
-      }      
-      return false;
+      }else{      
+        return false;
+      }
     },
     compassVisible: function(currentInt){
       if(currentScreen.get()== currentInt){
