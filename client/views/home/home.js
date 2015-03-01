@@ -9,9 +9,6 @@ Template.home.created = function() {
 Template.home.rendered = function() {
     self.finder     = self.$('.find-group'),
     self.nameInput  = self.$('.name');
-    $('.submit')
-        .on('vmousedown', findGroupMemebers)
-        .on('vmouseup',   stopFindingGroupMembers);
 
     self.autorun(checkLocationError);
     self.autorun(subcribeToUsersSyncingNearLoc);
@@ -19,12 +16,15 @@ Template.home.rendered = function() {
 }
  
 Template.home.events({
-    'mouseup .submit, mouseout .submit': stopFindingGroupMembers
+    'click .submit': toggleGroupMembers
 });
 
 
+function toggleGroupMembers(e) {
+    self.finder.hasClass(FINDING_CLASS) ? stopFindingGroupMembers(e) : findGroupMemebers(e);
+}
+
 function findGroupMemebers(event) {
-    event.preventDefault();
     if (isLocationOff) return;
     if (!self.nameInput.val()) return issueNonameInputAlert();
     self.finder.addClass(FINDING_CLASS);
@@ -59,8 +59,7 @@ function subcribeToUsersSyncingNearLoc() {
     var loc       = Session.get('location'),
         isSyncing = Meteor.user() && Meteor.user().profile.isSyncing;
     if (loc && isSyncing) {
-        Meteor.subscribe('usersSyncingNearLoc', loc, function(err) {
-        });
+        Meteor.subscribe('usersSyncingNearLoc', loc);
     }
 }
 
