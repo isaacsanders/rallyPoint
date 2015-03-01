@@ -62,11 +62,12 @@ var updateMarkers= function(myMap, centerPoint){
 
   clearMarkers();	
   
-  var flagLoc= new google.maps.LatLng(centerPoint.k, centerPoint.D);   
-  populationOptions.fillColor= 'Green';
-  populationOptions.center= flagLoc;   
-  console.log("drawing "+ populationOptions.fillColor+" dot at "+ populationOptions.center);
-  markers[0] = new google.maps.Circle(populationOptions);   
+  var flagLoc= new google.maps.LatLng(centerPoint.k, centerPoint.D);
+  markers[0] = new google.maps.Marker({
+    position: flagLoc,
+    map: myMap.instance,
+    icon: 'images/AppIcon.png'
+  });   
 
   var i=1;
   var gLatLng, tempUser;  
