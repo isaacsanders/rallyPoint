@@ -69,8 +69,7 @@ var updateMarkers= function(myMap, centerPoint){
   markers[0] = new google.maps.Circle(populationOptions);   
 
   var i=1;
-  var gLatLng, tempUser;
-  populationOptions.fillColor= 'Red';
+  var gLatLng, tempUser;  
   users.forEach(function(user){
   	loc = user.profile.location.coordinates;
   	gLatLng= new google.maps.LatLng(loc[0], loc[1]);
@@ -78,33 +77,15 @@ var updateMarkers= function(myMap, centerPoint){
   	populationOptions.center= gLatLng;
   	tempUser= Meteor.user();
   	if(tempUser._id == user._id){
-  		populationOptions.fillColor = "Orange";  		
-  	}
-
-  	// Add the circle for this city to the map.    	
-    console.log("drawing "+ populationOptions.fillColor+" dot at "+ populationOptions.center);
-  	markers[i++] = new google.maps.Circle(populationOptions);  	
-  });
-
-   
+  		populationOptions.fillColor = "Red";  		
+      // Add the circle for this city to the map.     
+      console.log("drawing "+ populationOptions.fillColor+" dot at "+ populationOptions.center);
+      markers[i++] = new google.maps.Circle(populationOptions);   
+    	}else{
+    // Add the circle for this city to the map.     
+      populationOptions.fillColor= 'Orange';
+      console.log("drawing "+ populationOptions.fillColor+" dot at "+ populationOptions.center);
+      markers[i++] = new google.maps.Circle(populationOptions);     
+    }
+  });  
 }
-// 	if(Meteor.user()==user){
-// 		var marker = new google.maps.Marker({
-// 			    position: gLatLng,
-// 			    map: myMap.instance,
-// 			    title: "You are here"
-// 				});
-// 	}else{
-// 		var marker = new google.maps.Marker({
-// 			    position: gLatLng,
-// 			    map: myMap.instance,
-// 			    title: user.name
-// 				});
-// 	}
-// });	
-// var marker = new google.maps.Marker({
-// 		    position: centerPoint,
-// 		    map: myMap.instance,
-// 		    title: "Rally Point"
-// 			});
-
