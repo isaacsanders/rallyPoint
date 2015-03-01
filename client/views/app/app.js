@@ -5,7 +5,7 @@ rallypt.ScreenEnum = {
     MAP : 2,
 };
 
-var currentScreen = new ReactiveVar(rallypt.ScreenEnum.MAP, null);
+var currentScreen = new ReactiveVar(rallypt.ScreenEnum.FRIENDS, null);
 
 Template.app.helpers({
     toggleIcon: function () {
@@ -23,13 +23,21 @@ Template.app.helpers({
       }else{
         return "Stop Rally!";
       }
+    },    
+    friendVisible:function(){
+      if(currentScreen.get()==rallypt.ScreenEnum.FRIENDS){
+        console.log("showing friendVisible");
+        return true;        
+      }
+      console.log("hiding invisible friends");
+      return false;
     },
-    currentScreenVisible: function(currentInt){
-      console.log("currInt "+ currentInt + "rlycur "+currentScreen.get());
-      if(currentInt == currentScreen.get()){        
+    compassVisible: function(currentInt){
+      if(currentScreen.get()== currentInt){
+        // console.log()
+        return "visible";        
+      }else{        
         return "hidden";
-      }else{
-        return "visible";
       }
     }
   });
@@ -41,6 +49,8 @@ Template.app.events({
     }else{
       currentScreen.set(rallypt.ScreenEnum.COMPASS);
     }
-    console.log(currentScreen.get());
+  },
+  "click #leave": function (event, template) {
+    Meteor.call("leaveGroup", Meteor.userId);
   }
 });

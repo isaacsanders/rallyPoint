@@ -16,7 +16,8 @@ Meteor.methods({
     setUserProfileProperty: setUserProfileProperty,
     updateUserLocation:     updateUserLocation,
     startSync:              startSync,
-    endSync:                endSync
+    endSync:                endSync,
+    leaveGroup:             leaveGroup
 });
 
 
@@ -28,9 +29,13 @@ function createGroupUser(name) {
     return credentials;
 }
 
+function leaveGroup(userId) {
+    setUserProfileProperty(userId, "groupId", "");
+}
+
 function updateUserLocation(location) {
     var userId = Meteor.userId();
-    if (userId && location) {
+    if (userId && location && location.accuracy) {
         setUserProfileProperty(Meteor.userId(), 'location', Util.locToMongo(location));
     }
 }

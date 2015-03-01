@@ -1,18 +1,17 @@
 <template name='app'>
 	<div class="app-top">
-		<button text="Leave">Leave</button>	
+		<button text="Leave" id="leave">Leave</button>	
 		<button><i id="toggle" class={{toggleIcon}}></i></button>
 	</div>    
-    {{#if currentScreen 0}}
-    	{{> friend}}
-    {{else}}
-        <div class={currentScreenVisible 2}}>
-    	   {{map}}
+        <div class={{friendVisible}}>
+           {{> friend}}
         </div>
-        <div class={{currentScreenVisible 2}}>
-            {{compass}}
+        <div class={{compassVisible 1}}>    	   
+           {{> compass}}
         </div>
-    {{/if}}
+        <div class={{compassVisible 2}}>
+           {{> map}} 
+        </div>    
     <div class="app-bottom">
     	<button>{{rallyText}}</button>
     </div>
