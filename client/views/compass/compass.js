@@ -67,7 +67,7 @@ Template.compass.rendered = function() {
           });
 
           var center = bounds.getCenter();
-          var distance = google.maps.geometry.spherical.computeDistanceBetween(myLocation, center);
+          var distance = Math.floor(google.maps.geometry.spherical.computeDistanceBetween(myLocation, center));
           var desiredHeading = google.maps.geometry.spherical.computeHeading(myLocation, center) + 180;
           var heading = data.magneticHeading
           var adjustment = heading - self.heading
