@@ -8,34 +8,29 @@ rallypt.ScreenEnum = {
 var currentScreen = new ReactiveVar(rallypt.ScreenEnum.FRIENDS, null);
 
 Template.app.helpers({
-
     toggleIcon: function () {
-      if(rallypt.currentScreen == rallypt.ScreenEnum.COMPASS) {       
-          return "fa fa-street-view";
-      }else if(rallypt.currentScreen == rallypt.ScreenEnum.MAP) { 
-          return "fa fa-compass";
-      }else{
-          return "fa fa-user-plus";
+      if(currentScreen.get() == rallypt.ScreenEnum.MAP){//in compass view        
+        return "fa fa-compass";
+      }else if(currentScreen.get() == rallypt.ScreenEnum.COMPASS){// map view
+        return "fa fa-street-view";
+      }else{//friend view (add button)
+        return "fa fa-user-plus";
       }
     },
-
     rallyText: function (){
-      if(rallypt.currentScreen == rallypt.ScreenEnum.COMPASS){
-        return "Rally";
+      if(currentScreen.get() == rallypt.ScreenEnum.FRIENDS){
+        return "Rally!";
       }else{
-        return "Stop Rally";
+        return "Stop Rally!";
       }
     },    
     friendVisible:function(){
-      if(currentScreen.get()==rallypt.ScreenEnum.FRIENDS){
-        console.log("showing friendVisible");
+      if(currentScreen.get()==rallypt.ScreenEnum.FRIENDS){        
         return true;        
-      }
-      console.log("hiding invisible friends");
+      }      
       return false;
     },
-
-    compassVisible: function(currentInt) {
+    compassVisible: function(currentInt){
       if(currentScreen.get()== currentInt){
         // console.log()
         return "visible";        
@@ -45,17 +40,16 @@ Template.app.helpers({
     }
   });
 
-
 Template.app.events({
-
   "click #toggle": function (event, template) {
     if(currentScreen.get()== rallypt.ScreenEnum.COMPASS){
       currentScreen.set(rallypt.ScreenEnum.MAP);
-    }else{
+    }else if(currentScreen.get()== rallypt.ScreenEnum.MAP){
       currentScreen.set(rallypt.ScreenEnum.COMPASS);
+    }else{
+      alert("find more friends");
     }
   },
-  
   "click #leave": function (event, template) {
     Meteor.call("leaveGroup", Meteor.userId());
   }
