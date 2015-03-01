@@ -28,6 +28,16 @@ Template.app.helpers({
 
 Template.app.events({
 
+    'click .fa-street-view': function() { 
+        renderFriendsList.set(false);
+        renderCompass.set(false);
+     },
+
+     'click .fa-compass': function() {
+        renderFriendsList.set(false);
+        renderCompass.set(true);
+     },
+
     'click #leave': leaveGroup,
 
     'click .fa-user-plus': startSyncing,
