@@ -6,12 +6,13 @@
     {{#if currentScreen 0}}
     	{{> friend}}
     {{else}}
-    	{{#if currentScreen 1}}
-    		{{> compass}}
-    	{{else}}
-    		{{>map}}
-    	{{/if}}
-    {{/if}}    
+        <div class={currentScreenVisible 2}}>
+    	   {{map}}
+        </div>
+        <div class={{currentScreenVisible 2}}>
+            {{compass}}
+        </div>
+    {{/if}}
     <div class="app-bottom">
     	<button>{{rallyText}}</button>
     </div>

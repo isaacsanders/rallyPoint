@@ -52,15 +52,14 @@ var panCurrentLocation = function(myMap){
 	return bounds.getCenter();
 }
 
-var markers = [];
+markers = [];
 var clearMarkers= function(){
 	for(var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
 }
 
-var updateMarkers= function(myMap, centerPoint){
-	clearMarkers();	
+var updateMarkers= function(myMap, centerPoint){	
 	var users= Meteor.users.find();
 	var loc;
 	var populationOptions = {
@@ -72,6 +71,8 @@ var updateMarkers= function(myMap, centerPoint){
       map: myMap.instance,      
       radius: 3
     };
+1
+	clearMarkers();	
     var i=0;
 	users.forEach(function(user){
 		loc = user.profile.location.coordinates;
@@ -79,18 +80,20 @@ var updateMarkers= function(myMap, centerPoint){
 		populationOptions.center= gLatLng;
 		var tempUser= Meteor.user();
 		if(tempUser._id == user._id){
-			populationOptions.fillColor = "Blue";
+			populationOptions.fillColor = "Orange";
+			console.log("drawing user dot");
 		}
 
     	// Add the circle for this city to the map.    	
+
     	var circle = new google.maps.Circle(populationOptions);
     	markers[i++]= circle;
     });
-    var gLatLng= new google.maps.LatLng(centerPoint); 
+    var flagLoc= new google.maps.LatLng(centerPoint); 
     populationOptions.fillColor= 'Green';
-	populationOptions.center= gLatLng;   
+	populationOptions.center= flagLoc;   
     var circle = new google.maps.Circle(populationOptions);
-    markers[i++] = circle;
+    markers[i++] = circle;    
 }
 	// 	if(Meteor.user()==user){
 	// 		var marker = new google.maps.Marker({
