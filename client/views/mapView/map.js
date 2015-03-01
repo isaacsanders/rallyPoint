@@ -66,7 +66,7 @@ var updateMarkers= function(myMap, centerPoint){
   markers[0] = new google.maps.Marker({
     position: flagLoc,
     map: myMap.instance,
-    icon: 'images/AppIcon.png'
+    icon: '../images/AppIcon.png'
   });   
 
   var i=1;
